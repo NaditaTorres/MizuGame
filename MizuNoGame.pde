@@ -1,3 +1,4 @@
+//-----------------------------------------Variables
 PImage img1;
 PImage img2;
 PImage b;
@@ -8,7 +9,8 @@ PImage cursor;
 PFont font1;
 int pantalla=0;
 
-int x1; //almacenará la posición
+//-------------------------------------------Posición de los peces
+int x1;
 int x2;
 int x3;
 int x4;
@@ -37,16 +39,20 @@ size(700, 700);
 pops = new ArrayList<Lollipop>();
 boundaries = new ArrayList<Boundary>();
 
-  //boundaries.add(new Boundary(width/4,height-5,width/2-50,10,0));
+//-----------------------------------------------------------Partes de la canasta
+ 
   boundaries.add(new Boundary(.2*width/4,height-50,width/2-50,20,0));
   boundaries.add(new Boundary(width-400,height/3,20,height,0));
   boundaries.add(new Boundary(20,height/3,20,height,0));
 
 cursor(CROSS);
+//-----------------------------------------------Peces
 b= loadImage("pez3.png");
 a= loadImage("pez2.png");
 c= loadImage("pulpo.png");
-cursor= loadImage("conchita.png");
+cursor= loadImage("conchita.png");//---------------------------cambio de imagen de cursor
+
+//--------------------------------------------------------------audio de burbujas
 soundengine = new Minim(this);
 sonido1 = soundengine.loadSample("burbujas.mp3", 1024);
 
@@ -66,15 +72,15 @@ void draw (){
   } 
 }
    switch (pantalla){
-case 0:
-img1 = loadImage("AcuarioF1.png");
+case 0://--------------------------------------------------------------Pantalla intro
+img1 = loadImage("AcuarioF1.png");//------------------fondo
 scale (.55);
 image(img1 , 0 , 0);
 
-img2 = loadImage("Mizuno.png");
+img2 = loadImage("Mizuno.png");//--------------------------letras japonesas
 image(img2 , 10 , 0);
 
-b = loadImage("pez3.png");
+b = loadImage("pez3.png");//-------------------------------indicaciones de movimiento de peces
 image(b, x1, 0);
 
 if(x1 > width){
@@ -104,7 +110,7 @@ if(x3 < -c.width){
 }
 
 
-
+//----------------------------------------------------------------Texto de título
 font1 = loadFont ("ComicSansMS-Bold-48.vlw");
 textFont(font1, 180);
 text("GAME!", 580, 720);
@@ -115,20 +121,21 @@ font1 = loadFont ("ComicSansMS-Bold-48.vlw");
 fill (random (57), random (201));
 textFont(font1, 70);
 text("Mantén en Click para continuar", 200, 820);
-   if (mousePressed){
+
+   if (mousePressed){ //-------------------------------------------------Salto para siguiente pantalla
          pantalla = 1;
        }
        
   break;
   
-  case 1:
+  case 1: //-------------------------------------------------------------Pantalla de indicaciones
   img1 = loadImage("AcuarioF1.png");
 scale (.55);
 image(img1 , 0 , 0);
 
 
 
-fill (255);
+fill (255); //-------------------------------------------------------------------Texto de indicaciones
   font1 = loadFont ("ComicSansMS-Bold-48.vlw");
 textFont(font1, 130);
 text("Indicaciones", 130, 400);
@@ -145,14 +152,14 @@ font1 = loadFont ("ComicSansMS-Bold-48.vlw");
 textFont(font1, 50);
 text("Para comenzar a jugar presiona ENTER", 100, 850);
 
-   if (keyPressed){
+   if (keyPressed){ //-------------------------------------------------Indicacion para saltar a otra pantalla
        if (key==ENTER);
        pantalla = 2;
       
 }
   break;
   
-   case 2:
+   case 2: //-------------------------------------------------------Pantalla de juego
    //background (255, 0, 0);
 img1 = loadImage("AcuarioF1.png");
 scale (.55);
@@ -162,12 +169,13 @@ font1 = loadFont ("ComicSansMS-Bold-48.vlw");
 textFont(font1, 50);
 text("Para terminar presiona ENTER", 100, 50);
 
+//--------------------------------------------------Llama las particulas y las piezas de la canasta para el juego
  box2d.step();
- for (Boundary wall: boundaries) {
+ for (Boundary wall: boundaries) { //--------------------------canasta
     wall.display();
   }
 
-for (Lollipop p: pops) {
+for (Lollipop p: pops) { //---------------------------------------------Particulas 
     p.display();
   }
 
@@ -180,7 +188,7 @@ for (int i = pops.size()-1; i >= 0; i--) {
 
 
 
-
+//---------------------------------------Llama a los peces en movimiento a la pantalla de juego
 
 b = loadImage("pez3.png");
 image(b, x1, 0, 600, 600);
@@ -235,7 +243,7 @@ if(x2 < -a.width){
 
 
     
-    if (keyPressed){
+    if (keyPressed){ //-------------------------------indicaciones para terminar juego
        if (key==ENTER);
        pantalla = 0;
    
@@ -245,7 +253,7 @@ if(x2 < -a.width){
 
  }
 }
- void mousePressed() {
+ void mousePressed() { //-------------------------------------Comando de audio y liberar partículas
    Lollipop p = new Lollipop(mouseX,mouseY);
   pops.add(p);
   if (mousePressed) {
